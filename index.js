@@ -31,22 +31,22 @@ class Musician {
 	// статичне поле count, яке відслідковує кількість музикантів, початкове значення 0
 	static count = 0;
 	// Об'являємо приватні поля #name; #instrument;
-	#name;
-	#instrument;
+	#name = "";
+	#instrument = "";
 
 	constructor(name, instrument) {
 		// Конструктор приймає два параметри: name та instrument
 		// присвоєння вхідного значення name до приватного поля #name
 		// присвоєння вхідного значення instrument до приватного поля #instrument
 		// збільшення значення статичного поля на 1
-		name = this.#name;
-		instrument = this.#instrument;
+		this.#name = name;
+		this.#instrument = instrument;
 		Musician.count += 1;
 	}
 
+	// гетер для приватного поля #name		
+	// повертає значення приватного поля #name
 	get name() {
-		// гетер для приватного поля #name
-		// повертає значення приватного поля #name
 		return this.#name;
 	}
 
@@ -72,7 +72,9 @@ class Musician {
 		// метод, що виводить рядок в консоль <#name> грає на <#instrument>
 		console.log(`${this.#name} грає на ${this.#instrument}`);
 	}
+
 }
+
 
 /*
  * Клас: Guitarist
@@ -131,9 +133,10 @@ class Guitarist extends Musician {
 	set band(newBand) {
 		this.#band = newBand;
 	}
-	joinBand() {
+	joinBand = () => {
 		this.#band = band;
 	}
+
 	play() {
 		console.log(`${super.name} грає на ${super.instrument} в групі ${this.#band}`);
 	}
@@ -185,6 +188,7 @@ class Bassist extends Musician {
 	// метод joinBand, що змінює значення #band,this.#band = band
 	// перевизначений метод play(), що виводить рядок в консоль ${super.name} грає на ${super.instrument} в групі ${this.#band}
 	#band;
+
 	constructor(name, instrument, band) {
 		super(name, instrument);
 		this.#band = band;
@@ -195,13 +199,21 @@ class Bassist extends Musician {
 	set band(newBand) {
 		this.#band = newBand;
 	}
-	joinBand() {
+	joinBand = () => {
 		this.#band = band;
 	}
 	play() {
 		console.log(`${super.name} грає на ${super.instrument} в групі ${this.#band}`);
 	}
+
 }
+
+Object.defineProperty(Musician.prototype, 'band', {
+	set(newBand) {
+		this.band = newBand;
+	},
+});
+
 
 // Тут ми використовуємо Object.defineProperty(), щоб додати сетер band до класу Musician після його створення.
 // Перший аргумент - це об'єкт, до якого ми хочемо додати властивість. У цьому випадку це Musician.prototype,
@@ -209,6 +221,9 @@ class Bassist extends Musician {
 // Другий аргумент - це ім'я властивості, яку ми хочемо додати. У цьому випадку це 'band'.
 // Третій аргумент - це об'єкт, який описує властивість. У цьому випадку ми хочемо додати сетер,
 // тому ми вказуємо функцію, яка буде викликатися при спробі встановити властивість 'band'.  this.band = newBand
+
+
+
 
 /*
  * Клас: Band
@@ -234,8 +249,8 @@ class Band {
 	// До приватного поля #members яке є масивом додаємо мового музиканта
 	// Якщо ні виводимо в консоль повідомлення Новий учасник повинен бути екземпляром класу Musician
 	// Створюємо метод playMusic(), за допомогою forEach перебираємо масив і викликаємо метод play() для кожного учасника гурту
-	#name;
-	#members;
+	#name = '';
+	#members = [];
 	constructor(name, members) {
 		this.#name = name;
 		this.#members = members;
@@ -257,7 +272,7 @@ class Band {
 			console.log('Новий учасник повинен бути екземпляром класу Musician');
 		}
 	}
-	playMusic() {
+	playMusic = () => {
 		this.#members.forEach(member => member.play());
 	}
 }
@@ -296,7 +311,7 @@ class Performance {
 	get date() {
 		return this.#date;
 	}
-	info() {
+	info = () => {
 		console.log(`Гурт ${this.#band.name} виступить в ${this.#location} ${this.#date.toLocaleDateString()}`);
 	}
 }
@@ -329,7 +344,7 @@ class Concert extends Performance {
 	set ticketPrice(newTicketPrice) {
 		this.#ticketPrice = newTicketPrice;
 	}
-	info() {
+	info = () => {
 		console.log(`Гурт ${super.band.name} виступить в ${super.location} ${super.date.toLocaleDateString()}, ціна квитка ${this.#ticketPrice}`);
 	}
 }
@@ -388,7 +403,7 @@ class SongWriter {
 	// Створюємо метод addSong для додавання нової пісні до масиву #songs
 	// Визначаємо метод info(), який виводить інформацію про автора пісень
 	// Виводимо інформацію у форматі: "Написав ${this.songs.length} пісень"
-	#songs;
+	#songs = [];
 	constructor(songs) {
 		this.#songs = songs;
 	}
@@ -398,7 +413,7 @@ class SongWriter {
 	addSong(song) {
 		this.#songs.push(song);
 	}
-	info() {
+	info = () => {
 		console.log(`Написав ${this.songs.length} пісень`);
 	}
 }
